@@ -8,7 +8,8 @@ public class PlayerController : MonoBehaviour
     CharacterController character;
     Animator anim;
 
-    public float Speed = 5;
+    public float walkSpeed = 2;
+    public float runSpeed = 4;
     float mouseX;
 
     private void Awake()
@@ -41,13 +42,13 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            character.Move(transform.TransformDirection(move) * Time.deltaTime * 15);
+            character.Move(transform.TransformDirection(move) * Time.deltaTime * runSpeed);
             anim.SetBool("isRun", true);
             anim.SetBool("isWalk", false);
         }
         else
         {
-            character.Move(transform.TransformDirection(move) * Time.deltaTime * 10);
+            character.Move(transform.TransformDirection(move) * Time.deltaTime * walkSpeed);
             anim.SetBool("isWalk", true);
             anim.SetBool("isRun", false);
         }
