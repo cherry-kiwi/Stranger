@@ -1,18 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float Speed = 5;    
-    float h, v;                     // 가로축과 세로축을 담을 변수를 전역변수로 생성. FixedUpdate에서 직접 생성하지 않은 이유는
-                                    // 이후 다른 함수에서도 접근할 것이기 때문.
+    CharacterController character;
 
-    void FixedUpdate()
+    public float Speed = 5;
+    float mouseX;
+
+    private void Awake()
     {
-        h = Input.GetAxis("Horizontal"); // 가로축
-        v = Input.GetAxis("Vertical"); // 세로축
+        //마우스 커서를 보이지 않게 설정, 현재 위치에 고정시킴
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
 
-        transform.position += new Vector3(h, 0, v) * Speed * Time.deltaTime;
+    private void Start()
+    {
+        character = GetComponent<CharacterController>();
+    }
+
+    void Update()
+    {
+        PlayerMovement();
+        mouseX += Input.GetAxis("Mouse X") * 10; //마우스 좌우
+        transform.eulerAngles = new Vector3(0, mouseX, 0);
+    }
+
+    void PlayerMovement()
+    {
+        float moveX = Input.GetAxis("Horizontal"); // 가로축
+        float moveZ = Input.GetAxis("Vertical"); // 세로축
+
+        Vector3 move = new Vector3(moveX, 0, moveZ);
+        character.Move(transform.TransformDirection(move) * Time.deltaTime * 10);
     }
 }
