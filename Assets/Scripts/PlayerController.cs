@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     Animator anim;
 
     public float walkSpeed = 2;
-    public float runSpeed = 4;
+    public float runSpeed = 3.5f;
     float mouseX;
 
     private void Awake()
