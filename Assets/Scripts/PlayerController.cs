@@ -72,6 +72,7 @@ public class PlayerController : MonoBehaviour
 
     void Shooting()
     {
+        //좌클릭하면 총에서 파티클
 
     }
 }
