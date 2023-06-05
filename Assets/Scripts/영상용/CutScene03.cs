@@ -14,10 +14,10 @@ public class CutScene03 : MonoBehaviour
 
     void Update()
     {
-        Shooting();
+        Attacking();
     }
 
-    void Shooting()
+    void Attacking()
     {
         if (Input.GetKey(KeyCode.Space))
         {
