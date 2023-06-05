@@ -8,8 +8,11 @@ public class PlayerController : MonoBehaviour
     CharacterController character;
     Animator anim;
 
+    Vector3 MoveDir;
+
     public float walkSpeed = 2;
     public float runSpeed = 3.5f;
+    public float gravity;    // 캐릭터에게 작용하는 중력.
     float mouseX;
 
     int hp = 32;
@@ -27,6 +30,9 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        gravity = 20.0f;
+
+        MoveDir = Vector3.zero;
         character = GetComponent<CharacterController>();
     }
 
@@ -57,6 +63,11 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("isWalk", true);
             anim.SetBool("isRun", false);
         }
+
+        MoveDir.y -= gravity * Time.deltaTime;
+
+        // 캐릭터 움직임.
+        character.Move(MoveDir * Time.deltaTime);
     }
 
     void Shooting()
