@@ -12,6 +12,10 @@ public class PlayerController : MonoBehaviour
     public float runSpeed = 3.5f;
     float mouseX;
 
+    int hp = 32;
+    int dagmage = 2;
+    int bullet = 60;
+
     private void Awake()
     {
         //마우스 커서를 보이지 않게 설정, 현재 위치에 고정시킴
@@ -32,6 +36,7 @@ public class PlayerController : MonoBehaviour
         mouseX += Input.GetAxis("Mouse X") * 10; //마우스 좌우
         transform.eulerAngles = new Vector3(0, mouseX, 0);
 
+        Shooting();
     }
 
     void PlayerMovement()
@@ -52,5 +57,10 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("isWalk", true);
             anim.SetBool("isRun", false);
         }
+    }
+
+    void Shooting()
+    {
+
     }
 }
