@@ -14,10 +14,16 @@ public class PlayerController : MonoBehaviour
     public float runSpeed = 3.5f;
     public float gravity;    // 캐릭터에게 작용하는 중력.
     float mouseX;
+    float mouseSensitivity = 5;
+
+    public float zeroMove = 0;
+    float shotDelay = 0.6f;
 
     int hp = 32;
     int dagmage = 2;
     int bullet = 60;
+
+    public GameObject gunParticle;
 
     private void Awake()
     {
@@ -38,8 +44,17 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        PlayerMovement();
-        mouseX += Input.GetAxis("Mouse X") * 10; //마우스 좌우
+        if (zeroMove <= 0)
+        {
+            PlayerMovement();
+        }
+        else
+        {
+            zeroMove -= 1 * Time.deltaTime;
+        }
+
+        //카메라 조작
+        mouseX += Input.GetAxis("Mouse X") * mouseSensitivity; //마우스 좌우
         transform.eulerAngles = new Vector3(0, mouseX, 0);
 
         Shooting();
@@ -51,16 +66,24 @@ public class PlayerController : MonoBehaviour
         float moveZ = Input.GetAxis("Vertical"); // 세로축
         Vector3 move = new Vector3(moveX, 0, moveZ);
 
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (!(move == Vector3.zero))
         {
-            character.Move(transform.TransformDirection(move) * Time.deltaTime * runSpeed);
-            anim.SetBool("isRun", true);
-            anim.SetBool("isWalk", false);
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                character.Move(transform.TransformDirection(move) * Time.deltaTime * runSpeed);
+                anim.SetBool("isRun", true);
+                anim.SetBool("isWalk", false);
+            }
+            else
+            {
+                character.Move(transform.TransformDirection(move) * Time.deltaTime * walkSpeed);
+                anim.SetBool("isWalk", true);
+                anim.SetBool("isRun", false);
+            }
         }
         else
         {
-            character.Move(transform.TransformDirection(move) * Time.deltaTime * walkSpeed);
-            anim.SetBool("isWalk", true);
+            anim.SetBool("isWalk", false);
             anim.SetBool("isRun", false);
         }
 
@@ -73,6 +96,20 @@ public class PlayerController : MonoBehaviour
     void Shooting()
     {
         //좌클릭하면 총에서 파티클
+        if (Input.GetMouseButton(0))
+        {
+            zeroMove = shotDelay;
+            anim.SetBool("isWalk", false);
+            anim.SetBool("isRun", false);
+            anim.SetBool("isShot", true);
 
+            gunParticle.SetActive(true);
+        }
+        else if (zeroMove <= 0)
+        {
+            anim.SetBool("isShot", false);
+
+            gunParticle.SetActive(false);
+        }
     }
 }
